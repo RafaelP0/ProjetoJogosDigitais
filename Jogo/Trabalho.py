@@ -1,6 +1,3 @@
-#----------------PARTE 1-------------------------------------
-
-
 import sys, pygame, random, pygame
 from pygame.locals import *
 from random import *
@@ -163,6 +160,120 @@ def killCircles():
         c1.kill()
     for c2 in circlelo:              
         c2.kill()
+        
+        
+def menu():
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    running = False
+                elif event.key == pygame.K_2:
+                    creditos()
+                elif event.key == pygame.K_3:
+                    opcoes()
+
+        screen.blit(imagem, (0, 0))
+        screen.blit(bus, ((screen_width / 2) - 90, 8))
+
+        menu_text = font.render('Menu:', True, WHITE)
+        screen.blit(menu_text, (screen_width / 2 - menu_text.get_width() / 2, 200))
+
+        option1_text = font.render('1 - Iniciar Jogo', True, WHITE)
+        screen.blit(option1_text, (screen_width / 2 - option1_text.get_width() / 2, 300))
+
+        option2_text = font.render('2 - Créditos', True, WHITE)
+        screen.blit(option2_text, (screen_width / 2 - option2_text.get_width() / 2, 350))
+
+        option3_text = font.render('3 - Opções', True, WHITE)
+        screen.blit(option3_text, (screen_width / 2 - option3_text.get_width() / 2, 400))
+
+        pygame.display.flip()
+
+
+def creditos():
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+
+        screen.fill(BLACK)
+
+        creditos_text = font.render('Créditos:', True, WHITE)
+        screen.blit(creditos_text, (screen_width / 2 - creditos_text.get_width() / 2, 200))
+
+        nome1_text = font.render('Nome: Gabriel Rezende Rangel Santana RA: 10331989', True, WHITE)
+        screen.blit(nome1_text, (screen_width / 2 - nome1_text.get_width() / 2, 250))
+
+        nome2_text = font.render('Nome: João Paulo Ladeia Santana RA: 10401026', True, WHITE)
+        screen.blit(nome2_text, (screen_width / 2 - nome2_text.get_width() / 2, 300))
+
+        nome3_text = font.render('Nome: Rafael Junqueira Pezeiro RA: 10374627', True, WHITE)
+        screen.blit(nome3_text, (screen_width / 2 - nome3_text.get_width() / 2, 350))
+
+        pygame.display.flip()
+
+def opcoes():
+    opcoes_running = True
+    opcao_selecionada = 1
+
+    while opcoes_running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    opcoes_running = False
+                elif event.key == pygame.K_UP:
+                    opcao_selecionada -= 1
+                    if opcao_selecionada < 1:
+                        opcao_selecionada = 3
+                elif event.key == pygame.K_DOWN:
+                    opcao_selecionada += 1
+                    if opcao_selecionada > 3:
+                        opcao_selecionada = 1
+
+        screen.fill(BLACK)
+
+        opcoes_text = font.render('Opções:', True, WHITE)
+        screen.blit(opcoes_text, (screen_width / 2 - opcoes_text.get_width() / 2, 200))
+
+        opcao1_text = font.render('1 - Opção 1', True, WHITE)
+        screen.blit(opcao1_text, (screen_width / 2 - opcao1_text.get_width() / 2, 300))
+        opcao2_text = font.render('2 - Opção 2', True, WHITE)
+        screen.blit(opcao2_text, (screen_width / 2 - opcao2_text.get_width() / 2, 350))
+        opcao3_text = font.render('3 - Opção 3', True, WHITE)
+        screen.blit(opcao3_text, (screen_width / 2 - opcao3_text.get_width() / 2, 400))
+
+        if opcao_selecionada == 1:
+            pygame.draw.rect(screen, WHITE, (screen_width / 2 - opcao1_text.get_width() / 2 - 10, 295,
+                                              opcao1_text.get_width() + 20, opcao1_text.get_height()), 2)
+        elif opcao_selecionada == 2:
+            pygame.draw.rect(screen, WHITE, (screen_width / 2 - opcao2_text.get_width() / 2 - 10, 345,
+                                              opcao2_text.get_width() + 20, opcao2_text.get_height()), 2)
+        elif opcao_selecionada == 3:
+            pygame.draw.rect(screen, WHITE, (screen_width / 2 - opcao3_text.get_width() / 2 - 10, 395,
+                                              opcao3_text.get_width() + 20, opcao3_text.get_height()), 2)
+
+        pygame.display.flip()
+
+
+def main():
+    menu()
+
+
+if __name__ == "__main__":
+    main()
     
 #----------------PARTE 2-------------------------------------
 
