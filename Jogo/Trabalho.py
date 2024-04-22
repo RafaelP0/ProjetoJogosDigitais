@@ -35,6 +35,7 @@ RED = (255, 0, 0)
 
 font = pygame.font.SysFont('sans',40)
 placar = 0
+coletado = 0
 
 
 def valoresConta():
@@ -62,28 +63,22 @@ def array(b):
         array_de_valores.append(a)
         n+=1
     # Imprima o array resultante
-    print(array_de_valores)
+    #print(array_de_valores)
     return array_de_valores
 
     
 class Circle(pygame.sprite.Sprite):
-    def __init__(self, x, y, raio, ponto, AA):
+    def __init__(self, x, y, raio, AA):
         super().__init__()
         self.valor = AA
-        print(self.valor)
-        if AA == b:
-            self.ponto=1
-        else:
-            self.ponto= 0
+        #print(self.valor)
         a=[]
         a=pygame.image.load(Pacotes[AA]).convert_alpha()
         a= pygame.transform.scale(a, (30, 30))
         self.image = a
-        
         self.rect = self.image.get_rect(center=(x, y))
-
-
         self.velocity = [choice([-1, 1]), choice([-1, 1])]
+        
         
 
     def update(self):
@@ -103,13 +98,10 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = nave
-
-        
         self.rect = self.image.get_rect(center=(400, 300))
 
 
     def update(self):
-
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.rect.move_ip(-5, 0)
@@ -131,7 +123,7 @@ def create_circle(values):
         X_vermelho = randint(40, (screen_width - 50))
         Y_vermelho = randint(40, (screen_height - 50))
         raio = 20
-        circle = Circle(X_vermelho, Y_vermelho, raio, 1, values[i] )
+        circle = Circle(X_vermelho, Y_vermelho, raio, values[i] )
         if values[i] == b:
             circlelo.add(circle)
         else:
@@ -156,10 +148,12 @@ pygame.time.set_timer(CLOCKTICK, 1000)
 temporizador = 60
 
 def killCircles():
-    for c1 in circles:              
-        c1.kill()
-    for c2 in circlelo:              
-        c2.kill()
+    circles.empty()
+    circlelo.empty()
+    #for c1 in circles:              
+        #c1.kill()
+    #for c2 in circlelo:              
+        #c2.kill()
         
         
 def menu():
@@ -178,7 +172,6 @@ def menu():
                     opcoes()
 
         screen.blit(imagem, (0, 0))
-        screen.blit(bus, ((screen_width / 2) - 90, 8))
 
         menu_text = font.render('Menu:', True, WHITE)
         screen.blit(menu_text, (screen_width / 2 - menu_text.get_width() / 2, 200))
@@ -301,31 +294,22 @@ while True:
     all_sprites.update()
     
     #if len(circles) < 10:
-        #create_circle()
-        
-    
-
-            
+        #create_circle()            
     
     circles.update()
     circlelo.update()
     if pygame.sprite.spritecollide(player,circlelo, dokill=False):
-        
-
-
-
         placar += 1
-            
+
         killCircles()
-            
-            
+        
         pygame.mixer.music.load('som/catch.mp3')
         pygame.mixer.music.play(0)
 
         a,b,c = valoresConta()
         create_circle(array(b))
         
-    if pygame.sprite.spritecollide(player,circles, dokill=False):
+    elif pygame.sprite.spritecollide(player,circles, dokill=False):
         killCircles()
             
         pygame.mixer.music.load('som/catch.mp3')
