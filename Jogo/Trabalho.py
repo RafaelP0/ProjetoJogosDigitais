@@ -351,15 +351,20 @@ while True:
         temporizador += 5
         placar += 10
         coletado +=1
-        if coletado == 2:   
-            nivel +=1
-            coletado = 0
+        
 
         if nivel !=3:
+            if coletado == 10:   
+                nivel +=1
+                coletado = 0
             killCircles()
             a,b,c = valoresConta()
             praCriar()
         else:
+            if coletado == 20:   
+                nivel +=1
+                coletado = 0
+                
             if coletado % 2 ==0:
                 killCircles()
                 a,b,c = valoresConta()
