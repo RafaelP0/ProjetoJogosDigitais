@@ -1,7 +1,7 @@
 import sys, pygame, random, pygame
 from pygame.locals import *
 from random import *
-
+from pygame import mixer
 pygame.init()
 
 screen_width = 1200
@@ -26,6 +26,18 @@ bus = pygame.transform.scale(bus, (550, 170))
 
 Pacotes=[]
 Pacotes=["sprites/pacotes/pacote0.png","sprites/pacotes/pacote1.png", "sprites/pacotes/pacote2.png", "sprites/pacotes/pacote3.png","sprites/pacotes/pacote4.png", "sprites/pacotes/pacote5.png", "sprites/pacotes/pacote6.png", "sprites/pacotes/pacote7.png", "sprites/pacotes/pacote8.png", "sprites/pacotes/pacote9.png", "sprites/pacotes/pacote10.png", "sprites/pacotes/pacote11.png", "sprites/pacotes/pacote12.png", "sprites/pacotes/pacote13.png", "sprites/pacotes/pacote14.png", "sprites/pacotes/pacote15.png", "sprites/pacotes/pacote16.png", "sprites/pacotes/pacote17.png", "sprites/pacotes/pacote18.png",]
+
+correct=mixer.Sound("Audio/Sound/correct.mp3")
+#correct.set_volume(0.2)
+
+wrong=mixer.Sound("Audio/Sound/wrong.mp3")
+wrong.set_volume(0.5)
+
+# background music
+mixer.music.load("Audio/Music/Wii.mp3")
+mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.5)
+
 
 BLACK  = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -370,8 +382,7 @@ while True:
                 a,b,c = valoresConta()
                 praCriar()
 
-        pygame.mixer.music.load('som/catch.mp3')
-        pygame.mixer.music.play(0)
+        correct.play()
 
         
 
@@ -381,8 +392,7 @@ while True:
                 coletado -=1
                 
         killCircles()           
-        pygame.mixer.music.load('som/catch.mp3')
-        pygame.mixer.music.play(0)
+        wrong.play()
 
         a,b,c = valoresConta()
         praCriar()
