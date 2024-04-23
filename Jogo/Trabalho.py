@@ -34,9 +34,27 @@ YELLOW = (255, 255, 0)
 RED = (255, 0, 0)
 
 font = pygame.font.SysFont('sans',40)
-placar = 0
+placar = 200
+#men = 0
 coletado = 0
+nivel = 1
 
+def expressions():
+    if nivel == 1:
+        return (f"{a} + {b} = _")
+    elif nivel == 2:
+        return (f"{a} + _ = {c}")
+    elif nivel == 3:
+        return (f"_ + _ = {c}")
+
+def praCriar():
+    if nivel == 1:
+        return create_circle(array(c))
+    elif nivel == 2:
+        return create_circle(array(b))
+    elif nivel == 3:
+        return create_circle(arrays(a,b))
+    
 
 def valoresConta():
     a = randint(0, 18)
@@ -46,32 +64,51 @@ def valoresConta():
     b = c - a
     return [a,b,c]
 
-def array(b):
-    # Crie um array de 10 elementos
+def array(num):
     array_de_valores =[]
-    array_de_valores.append(b)
+    array_de_valores.append(num)
     
     n=0
     while n <9:
-        a = randint(0, 18)
-        # Adicione o valor de 'b' ao array
-        while a in array_de_valores:
-            a = randint(0, 18)
+        m = randint(0, 18)
+        while m in array_de_valores:
+            m = randint(0, 18)
             
-        while a == b:
-            a = randint(0, 18)
-        array_de_valores.append(a)
+        while m == num:
+            m = randint(0, 18)
+        array_de_valores.append(m)
         n+=1
-    # Imprima o array resultante
-    #print(array_de_valores)
+
     return array_de_valores
 
+def arrays(num1,num2):
+    array_de_valores =[]
+    array_de_valores.append(num1)
+    array_de_valores.append(num2)
+    n=0
+    while n <5:
+        m = randint(0, 18)
+        while m in array_de_valores:
+            m = randint(0, 18)
+            
+        while (m == num1) or (m ==num2):
+            m = randint(0, 18)
+
+        for teste in array_de_valores:
+            if m + teste == c:
+                m = randint(0, 18)
+        array_de_valores.append(m)
+        n+=1
+
+    return array_de_valores
+
+
+    
     
 class Circle(pygame.sprite.Sprite):
     def __init__(self, x, y, raio, AA):
         super().__init__()
         self.valor = AA
-        #print(self.valor)
         a=[]
         a=pygame.image.load(Pacotes[AA]).convert_alpha()
         a= pygame.transform.scale(a, (30, 30))
@@ -90,8 +127,6 @@ class Circle(pygame.sprite.Sprite):
                 self.velocity[1] *= -1
 
             
-
-
 
 
 class Player(pygame.sprite.Sprite):
@@ -119,22 +154,36 @@ class Player(pygame.sprite.Sprite):
 
 
 def create_circle(values):
-    for i in range(10):
+    for i in range(len(values)):
         X_vermelho = randint(40, (screen_width - 50))
         Y_vermelho = randint(40, (screen_height - 50))
         raio = 20
         circle = Circle(X_vermelho, Y_vermelho, raio, values[i] )
-        if values[i] == b:
-            circlelo.add(circle)
-        else:
-            circles.add(circle)  # Adicione o círculo diretamente ao grupo 'circles'
+        if nivel == 1:
+            if values[i] == c:
+                circlelo.add(circle)
+            else:
+                circles.add(circle)  
+            
+        elif nivel == 2:
+            if values[i] == b:
+                circlelo.add(circle)
+            else:
+                circles.add(circle) 
+            
+        elif nivel == 3:
+            if values[i] == a:
+                circlelo.add(circle)
+            if values[i] == b:
+                circlelo.add(circle)
+            else:
+                circles.add(circle)  
 
 
-circles = pygame.sprite.Group()  # Crie o grupo 'circles'
-circlelo = pygame.sprite.Group()  # Crie o grupo 'circles'
+circles = pygame.sprite.Group()  
+circlelo = pygame.sprite.Group()  
 a,b,c = valoresConta()
-create_circle(array(b))
-        
+praCriar()       
 
 player = Player()
 all_sprites = pygame.sprite.Group()
@@ -150,10 +199,6 @@ temporizador = 60
 def killCircles():
     circles.empty()
     circlelo.empty()
-    #for c1 in circles:              
-        #c1.kill()
-    #for c2 in circlelo:              
-        #c2.kill()
         
         
 def menu():
@@ -261,6 +306,7 @@ def opcoes():
         pygame.display.flip()
 
 
+
 def main():
     menu()
 
@@ -270,7 +316,7 @@ if __name__ == "__main__":
     
 #----------------PARTE 2-------------------------------------
 
-
+    
 
 while True:
     
@@ -281,10 +327,13 @@ while True:
             sys.exit()
         
         if event.type == CLOCKTICK:
-            temporizador = temporizador -1
+            if temporizador != 0:
+                temporizador = temporizador -1
+            else:
+                if placar > 0:
+                    placar -=5
         
-    if temporizador == 0:
-        break
+        
 
 
     screen.blit(imagem, (0, 0))
@@ -292,54 +341,71 @@ while True:
 
     player.update()
     all_sprites.update()
-    
-    #if len(circles) < 10:
-        #create_circle()            
+        
     
     circles.update()
     circlelo.update()
-    if pygame.sprite.spritecollide(player,circlelo, dokill=False):
-        placar += 1
+    
 
-        killCircles()
-        
+    if pygame.sprite.spritecollide(player,circlelo, dokill=True):
+        temporizador += 5
+        placar += 10
+        coletado +=1
+        if coletado == 2:   
+            nivel +=1
+            coletado = 0
+
+        if nivel !=3:
+            killCircles()
+            a,b,c = valoresConta()
+            praCriar()
+        else:
+            if coletado % 2 ==0:
+                killCircles()
+                a,b,c = valoresConta()
+                praCriar()
+
         pygame.mixer.music.load('som/catch.mp3')
         pygame.mixer.music.play(0)
 
-        a,b,c = valoresConta()
-        create_circle(array(b))
         
+
     elif pygame.sprite.spritecollide(player,circles, dokill=False):
-        killCircles()
-            
+        if nivel ==3:
+            if coletado % 2 ==1:
+                coletado -=1
+                
+        killCircles()           
         pygame.mixer.music.load('som/catch.mp3')
         pygame.mixer.music.play(0)
 
         a,b,c = valoresConta()
-        create_circle(array(b))
+        praCriar()
+
+    if nivel == 4:
+        break
+    
         
   
     score1 = font.render('Placar '+str(placar), True, (WHITE))
     screen.blit(score1, ((screen_width-200), 50))
-
+    
+    lvlDisplay = font.render('Nivel '+str(nivel), True, (WHITE))
+    screen.blit(lvlDisplay, ((screen_width-198), 100))
+        
     timer1 = font.render('Tempo ' + str(temporizador), True, (YELLOW))
     screen.blit(timer1, (50, 50))
 
-    expressao = f"{a} + _ = {c}"
+    
+    expressao = expressions()
 
-    AA = font.render(expressao, True, (YELLOW))
-    screen.blit(AA, ((screen_width/2), 50))
+    Formula = font.render(expressao, True, (YELLOW))
+    screen.blit(Formula, ((screen_width/2), 50))
 
     for circle1 in circles:
-        #if circle1.type != 4:
-            #circles.draw(screen)
-        #else:
         screen.blit(circle1.image, circle1.rect)
 
     for circle1 in circlelo:
-        #if circle1.type != 4:
-            #circles.draw(screen)
-        #else:
         screen.blit(circle1.image, circle1.rect)
     
     all_sprites.draw(screen)
