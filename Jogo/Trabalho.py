@@ -27,10 +27,10 @@ bus = pygame.transform.scale(bus, (550, 170))
 Pacotes=[]
 Pacotes=["sprites/pacotes/pacote0.png","sprites/pacotes/pacote1.png", "sprites/pacotes/pacote2.png", "sprites/pacotes/pacote3.png","sprites/pacotes/pacote4.png", "sprites/pacotes/pacote5.png", "sprites/pacotes/pacote6.png", "sprites/pacotes/pacote7.png", "sprites/pacotes/pacote8.png", "sprites/pacotes/pacote9.png", "sprites/pacotes/pacote10.png", "sprites/pacotes/pacote11.png", "sprites/pacotes/pacote12.png", "sprites/pacotes/pacote13.png", "sprites/pacotes/pacote14.png", "sprites/pacotes/pacote15.png", "sprites/pacotes/pacote16.png", "sprites/pacotes/pacote17.png", "sprites/pacotes/pacote18.png",]
 
-correct=mixer.Sound("Audio/Sound/correct.mp3")
+correct=mixer.Sound("Audio/Sound/correct.wav")
 #correct.set_volume(0.2)
 
-wrong=mixer.Sound("Audio/Sound/wrong.mp3")
+wrong=mixer.Sound("Audio/Sound/wrong.wav")
 wrong.set_volume(0.5)
 
 # background music
@@ -206,7 +206,7 @@ clock = pygame.time.Clock()
 
 CLOCKTICK = pygame.USEREVENT+1
 pygame.time.set_timer(CLOCKTICK, 1000) 
-temporizador = 60
+temporizador = 15
 
 def killCircles():
     circles.empty()
