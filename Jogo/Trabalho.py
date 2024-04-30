@@ -51,11 +51,9 @@ placar = 200
 #men = 0
 coletado = 0
 nivel = 3
-h="_"
+numColetar = 2
 
 def expressions(h, e):
-    
-    
     if nivel == 1:
         return (f"{a} + {b} = {h}")
     elif nivel == 2:
@@ -397,7 +395,7 @@ while True:
         
 
         if nivel !=3:
-            if coletado == 2:   
+            if coletado == numColetar:   
                 nivel +=1
                 coletado = 0
             killCircles()
@@ -411,7 +409,7 @@ while True:
         else:
             correct.play()
             mostra()
-            if coletado == 4:   
+            if coletado == (numColetar*2):   
                 nivel +=1
                 coletado = 0
 
