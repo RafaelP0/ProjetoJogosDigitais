@@ -215,7 +215,30 @@ temporizador = 12
 def killCircles():
     circles.empty()
     circlelo.empty()
-        
+
+
+def mostra():
+    tempp=1
+    if nivel == 1:
+        expressao = expressions(c, "_")
+    elif nivel == 2:
+        expressao = expressions(b, "_")
+    elif nivel == 3:
+        for c1 in circlelo:
+            if c1.valor == a:
+                expressao = expressions("_", b)
+            elif c1.valor == b:
+                expressao = expressions(a, "_")
+        if coletado % 2 ==0:
+            expressao = expressions(a, b)
+                
+    Formula = font.render(expressao, True, (GREEN))
+    screen.blit(Formula, ((screen_width/2), 50))
+    pygame.display.flip()
+    while tempp >=0:
+        for event in pygame.event.get():
+            if event.type == CLOCKTICK:
+                tempp-=1
         
 def menu():
     running = True
@@ -323,28 +346,7 @@ def opcoes():
 
 
 
-def mostra():
-    tempp=1
-    if nivel == 1:
-        expressao = expressions(c, "_")
-    elif nivel == 2:
-        expressao = expressions(b, "_")
-    elif nivel == 3:
-        for c1 in circlelo:
-            if c1.valor == a:
-                expressao = expressions("_", b)
-            elif c1.valor == b:
-                expressao = expressions(a, "_")
-        if coletado % 2 ==0:
-            expressao = expressions(a, b)
-                
-    Formula = font.render(expressao, True, (GREEN))
-    screen.blit(Formula, ((screen_width/2), 50))
-    pygame.display.flip()
-    while tempp >=0:
-        for event in pygame.event.get():
-            if event.type == CLOCKTICK:
-                tempp-=1
+
 
 
 
@@ -448,7 +450,6 @@ while True:
     timer1 = font.render('Tempo ' + str(temporizador), True, (YELLOW))
     screen.blit(timer1, (50, 50))
 
-    
     expressao = expressions("_","_")
     
     Formula = font.render(expressao, True, (YELLOW))
