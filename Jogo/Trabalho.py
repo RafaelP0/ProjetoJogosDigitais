@@ -44,20 +44,24 @@ WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 RED = (255, 0, 0)
+GREEN = (0, 255, 0)
 
 font = pygame.font.SysFont('sans',40)
 placar = 200
 #men = 0
 coletado = 0
-nivel = 1
+nivel = 3
+h="_"
 
-def expressions():
+def expressions(h, e):
+    
+    
     if nivel == 1:
-        return (f"{a} + {b} = _")
+        return (f"{a} + {b} = {h}")
     elif nivel == 2:
-        return (f"{a} + _ = {c}")
+        return (f"{a} + {h} = {c}")
     elif nivel == 3:
-        return (f"_ + _ = {c}")
+        return (f"{h} + {e} = {c}")
 
 def praCriar():
     if nivel == 1:
@@ -206,7 +210,7 @@ clock = pygame.time.Clock()
 
 CLOCKTICK = pygame.USEREVENT+1
 pygame.time.set_timer(CLOCKTICK, 1000) 
-temporizador = 15
+temporizador = 12
 
 def killCircles():
     circles.empty()
@@ -319,6 +323,31 @@ def opcoes():
 
 
 
+def mostra():
+    tempp=1
+    if nivel == 1:
+        expressao = expressions(c, "_")
+    elif nivel == 2:
+        expressao = expressions(b, "_")
+    elif nivel == 3:
+        for c1 in circlelo:
+            if c1.valor == a:
+                expressao = expressions("_", b)
+            elif c1.valor == b:
+                expressao = expressions(a, "_")
+        if coletado % 2 ==0:
+            expressao = expressions(a, b)
+                
+    Formula = font.render(expressao, True, (GREEN))
+    screen.blit(Formula, ((screen_width/2), 50))
+    pygame.display.flip()
+    while tempp >=0:
+        for event in pygame.event.get():
+            if event.type == CLOCKTICK:
+                tempp-=1
+
+
+
 def main():
     menu()
 
@@ -366,24 +395,32 @@ while True:
         
 
         if nivel !=3:
-            if coletado == 10:   
+            if coletado == 2:   
                 nivel +=1
                 coletado = 0
             killCircles()
+            correct.play()
+            mostra()
             a,b,c = valoresConta()
+            
+                
+                
             praCriar()
         else:
-            if coletado == 20:   
+            correct.play()
+            mostra()
+            if coletado == 4:   
                 nivel +=1
                 coletado = 0
-                
+
             if coletado % 2 ==0:
                 killCircles()
+                
                 a,b,c = valoresConta()
                 praCriar()
 
-        correct.play()
-
+        
+            
         
 
     elif pygame.sprite.spritecollide(player,circles, dokill=False):
@@ -412,8 +449,8 @@ while True:
     screen.blit(timer1, (50, 50))
 
     
-    expressao = expressions()
-
+    expressao = expressions("_","_")
+    
     Formula = font.render(expressao, True, (YELLOW))
     screen.blit(Formula, ((screen_width/2), 50))
 
