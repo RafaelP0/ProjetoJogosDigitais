@@ -18,7 +18,8 @@ pacote = pygame.image.load("sprites/pacote.png")
 	
 pacote = pygame.transform.scale(pacote, (20, 20))
 
-
+redX = pygame.image.load("img/X.png")
+redX = pygame.transform.scale(redX, (180, 70))
 
 bus = pygame.image.load("sprites/bus.png")
 #bus = pygame.transform.scale(bus, (550, 170))
@@ -177,7 +178,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.img = nave
         self.image = nave
-        self.rect = self.image.get_rect(center=(400, 300))
+        self.rect = self.image.get_rect(center=(screen_width/2, screen_height*0.9))
 
 
     def update(self):
@@ -273,8 +274,69 @@ def mostra():
             if event.type == CLOCKTICK:
                 tempp-=1
 
-imagem = defBG()
+def mostraWrong():
+    tempp=1
 
+                
+    Formula = font.render(expressao, True, (BLACK))
+    screen.blit(Formula, ((screen_width/2)- 120, 50))
+    screen.blit(redX, ((screen_width/2) - 130, 40))
+    pygame.display.flip()
+    while tempp >=0:
+        for event in pygame.event.get():
+            if event.type == CLOCKTICK:
+                tempp-=1
+
+imagem = defBG()
+def writeCuts(array,i):
+    aa=i
+    z=array[aa]
+    aa+=1
+    x=array[aa]
+    aa+=1
+    c=array[aa]
+    texto1 = font.render(z, True, (WHITE))
+    screen.blit(texto1, (50, (screen_height - 150)))
+    texto2 = font.render(x, True, (WHITE))
+    screen.blit(texto2, (50, (screen_height - 100)))
+    texto3 = font.render(c, True, (WHITE))
+    screen.blit(texto3, (50, (screen_height - 50)))
+
+
+def loadChars():
+    if nivel == 1:
+        screen.blit(bossLeft, (50, screen_height*0.5))
+        screen.blit(playerRight, ((screen_width-500), (screen_height*0.2)))
+    else:
+        screen.blit(playerLeft, (50, screen_height*0.2))
+        screen.blit(bossRight, ((screen_width-500), (screen_height*0.5)))
+        
+def cuts():
+    files=[]
+    files=['Cutscene/cutscene1.txt','Cutscene/cutscene2.txt','Cutscene/cutscene3.txt','Cutscene/cutscene4.txt' ]
+    file1 = open(files[nivel-1],'r')
+    file1.seek(0)
+    arr=[None]*100
+    i=0
+    tamanho=[]
+    tamanho=[16,6,12,23]
+    for valorr in file1:
+        arr[i] = valorr
+        i+=1
+    
+    j=0
+    while j <=tamanho[nivel-1]:
+        screen.blit(imagem, (0, 0))
+        loadChars()
+        pygame.draw.rect(screen, (0, 0, 0), (0, (screen_height - 200), screen_width, screen_height*0.3))
+        writeCuts(arr,j)
+        for event in pygame.event.get():
+            if pygame.mouse.get_pressed()[0]:
+                j+=3
+        pygame.display.flip()
+        if j >= tamanho[nivel-1]:
+            break;
+        
 def menu():
     running = True
     while running:
@@ -380,53 +442,7 @@ def opcoes():
         pygame.display.flip()
 
 
-def writeCuts(array,i):
-    aa=i
-    z=array[aa]
-    aa+=1
-    x=array[aa]
-    aa+=1
-    c=array[aa]
-    texto1 = font.render(z, True, (WHITE))
-    screen.blit(texto1, (50, (screen_height - 150)))
-    texto2 = font.render(x, True, (WHITE))
-    screen.blit(texto2, (50, (screen_height - 100)))
-    texto3 = font.render(c, True, (WHITE))
-    screen.blit(texto3, (50, (screen_height - 50)))
 
-
-def loadChars():
-    if nivel == 1:
-        screen.blit(bossLeft, (50, screen_height*0.5))
-        screen.blit(playerRight, ((screen_width-500), (screen_height*0.2)))
-    else:
-        screen.blit(playerLeft, (50, screen_height*0.2))
-        screen.blit(bossRight, ((screen_width-500), (screen_height*0.5)))
-def cuts():
-    files=[]
-    files=['Cutscene/cutscene1.txt','Cutscene/cutscene2.txt','Cutscene/cutscene3.txt','Cutscene/cutscene4.txt' ]
-    file1 = open(files[nivel-1],'r')
-    file1.seek(0)
-    arr=[None]*100
-    i=0
-    tamanho=[]
-    tamanho=[16,6,12,23]
-    for valorr in file1:
-        arr[i] = valorr
-        i+=1
-    
-    j=0
-    while j <=tamanho[nivel-1]:
-        screen.blit(imagem, (0, 0))
-        loadChars()
-        pygame.draw.rect(screen, (0, 0, 0), (0, (screen_height - 200), screen_width, screen_height*0.3))
-        writeCuts(arr,j)
-        for event in pygame.event.get():
-            if pygame.mouse.get_pressed()[0]:
-                j+=3
-        pygame.display.flip()
-        if j >= tamanho[nivel-1]:
-            break;
         
     
 def main():
@@ -490,6 +506,7 @@ nave = pygame.transform.scale(nave, (80, 80))
 player = Player()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
+expressao = expressions("_","_")
 
 cutscene = True
 while True:
@@ -541,9 +558,6 @@ while True:
             correct.play()
             mostra()
             a,b,c = valoresConta()
-            
-                
-                
             praCriar()
         else:
             correct.play()
@@ -570,6 +584,7 @@ while True:
                 
         killCircles()           
         wrong.play()
+        mostraWrong()
 
         a,b,c = valoresConta()
         praCriar()
