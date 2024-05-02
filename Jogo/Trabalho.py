@@ -266,7 +266,7 @@ def mostra():
             expressao = expressions(a, b)
                 
     Formula = font.render(expressao, True, (GREEN))
-    screen.blit(Formula, ((screen_width/2), 50))
+    screen.blit(Formula, ((screen_width/2)- 120, 50))
     pygame.display.flip()
     while tempp >=0:
         for event in pygame.event.get():
