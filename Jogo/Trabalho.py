@@ -183,24 +183,40 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] and keys[pygame.K_UP]:
+                self.image = rotate_image(self.img, 45)
+                self.rect.move_ip(-5, -5)
+                
+        elif keys[pygame.K_LEFT] and keys[pygame.K_DOWN]:
+                self.image = rotate_image(self.img, 135)
+                self.rect.move_ip(-5, 5)
+
+        
+
+        elif keys[pygame.K_RIGHT] and keys[pygame.K_UP]:
+                self.image = rotate_image(self.img, -45)
+                self.rect.move_ip(5, -5)
+                
+        elif keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
+                self.image = rotate_image(self.img, -135)
+                self.rect.move_ip(5, 5)
+                
+        elif keys[pygame.K_LEFT]:
             self.rect.move_ip(-5, 0)
             self.image = rotate_image(self.img, 90)
-            
-            
-        if keys[pygame.K_RIGHT]:
+
+        elif keys[pygame.K_RIGHT]:
             self.rect.move_ip(5, 0)
             self.image = rotate_image(self.img, -90)
             
-        if keys[pygame.K_UP]:
+        elif keys[pygame.K_UP]:
             self.rect.move_ip(0, -5)
             self.image = self.img
-        if keys[pygame.K_DOWN]:
+            
+        elif keys[pygame.K_DOWN]:
             self.rect.move_ip(0, 5)
             self.image = rotate_image(self.img, 180)
 
-            
-        
         self.rect.clamp_ip(screen.get_rect())
         
 
