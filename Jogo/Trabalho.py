@@ -9,7 +9,7 @@ screen_height = 750
 size = (screen_width, screen_height)
 screen = pygame.display.set_mode(size)
 
-pygame.display.set_caption("Papa Bolinhas")
+pygame.display.set_caption("Matematica espacial")
 
 #imagem = pygame.image.load("img/imagem_fundo.png")
 #imagem = pygame.transform.scale(imagem, (size))
@@ -224,7 +224,13 @@ class Player(pygame.sprite.Sprite):
 def create_circle(values):
     for i in range(len(values)):
         X_vermelho = randint(40, (screen_width - 50))
+        
         Y_vermelho = randint(40, (screen_height - 50))
+
+        if X_vermelho >= screen_width/2 - 100 and X_vermelho <= screen_width/2 + 100:
+            while Y_vermelho >= screen_height*0.9/2 - 100 and Y_vermelho <= screen_height*0.9/2 + 100:
+                Y_vermelho = randint(40, (screen_height - 50))
+                
         raio = 20
         circle = Circle(X_vermelho, Y_vermelho, raio, values[i] )
         if nivel == 1:
