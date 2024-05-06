@@ -2,6 +2,8 @@ import sys, pygame, random, pygame
 from pygame.locals import *
 from random import *
 from pygame import mixer
+import io
+
 pygame.init()
 
 screen_width = 1200
@@ -336,7 +338,7 @@ def loadChars():
 def cuts():
     files=[]
     files=['Cutscene/cutscene1.txt','Cutscene/cutscene2.txt','Cutscene/cutscene3.txt','Cutscene/cutscene4.txt' ]
-    file1 = open(files[nivel-1],'r')
+    file1 = io.open(files[nivel-1],'r', encoding="utf8")
     file1.seek(0)
     arr=[None]*100
     i=0
@@ -476,7 +478,8 @@ if __name__ == "__main__":
     
 #----------------PARTE 2-------------------------------------
 nave1 = pygame.image.load(naves[0])
-nave1 = pygame.transform.scale(nave1, (((screen_width//3)),(screen_height//3)))
+
+nave1 = pygame.transform.scale(nave1, ((screen_width//3),(screen_height//3)))
 nave2 = pygame.image.load(naves[1])
 nave2 = pygame.transform.scale(nave2, (((screen_width//3)),(screen_height//3)))
 nave3 = pygame.image.load(naves[2])
