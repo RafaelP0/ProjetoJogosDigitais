@@ -475,7 +475,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+
 #----------------PARTE 2-------------------------------------
 nave1 = pygame.image.load(naves[0])
 
@@ -577,6 +577,9 @@ while True:
         if nivel !=3:
             if coletado == numColetar:   
                 nivel +=1
+                all_sprites.empty()
+                player = Player()
+                all_sprites.add(player)
                 coletado = 0
                 cutscene = True
             killCircles()
