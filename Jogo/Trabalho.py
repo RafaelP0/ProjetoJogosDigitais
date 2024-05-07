@@ -8,6 +8,7 @@ pygame.init()
 
 screen_width = 1200
 screen_height = 750
+#screen_height = 800
 size = (screen_width, screen_height)
 screen = pygame.display.set_mode(size)
 
@@ -65,7 +66,10 @@ YELLOW = (255, 255, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 
+fontG = pygame.font.SysFont('sans',60)
 font = pygame.font.SysFont('sans',40)
+fontP = pygame.font.SysFont('sans',35)
+
 placar = 200
 #men = 0
 coletado = 0
@@ -81,13 +85,7 @@ def defBG():
     imagem = pygame.transform.scale(imagem, (size))
     return imagem
 
-def expressions(h, e):
-    if nivel == 1:
-        return (f"{a} + {b} = {h}")
-    elif nivel == 2:
-        return (f"{a} + {h} = {c}")
-    elif nivel == 3:
-        return (f"{h} + {e} = {c}")
+
 
 def praCriar():
     if nivel == 1:
@@ -235,6 +233,7 @@ def create_circle(values):
                 
         raio = 20
         circle = Circle(X_vermelho, Y_vermelho, raio, values[i] )
+
         if nivel == 1:
             if values[i] == c:
                 circlelo.add(circle)
@@ -258,8 +257,7 @@ def create_circle(values):
 
 circles = pygame.sprite.Group()  
 circlelo = pygame.sprite.Group()  
-a,b,c = valoresConta()
-praCriar()       
+
 
 
 
@@ -268,24 +266,37 @@ clock = pygame.time.Clock()
 
 CLOCKTICK = pygame.USEREVENT+1
 pygame.time.set_timer(CLOCKTICK, 1000) 
-temporizador = 12
+#temporizador = 12
 
 def killCircles():
     circles.empty()
     circlelo.empty()
 
-
+def expressions(h, e):
+    if nivel == 1:
+        return (f"{a} + {b} = {h}")
+    elif nivel == 2:
+        return (f"{Aa} + {h} = {c}")
+    elif nivel == 3:
+        return (f"{h} + {e} = {c}")
+    
 def mostra():
     tempp=1
+    
     if nivel == 1:
+        print ("1")
         expressao = expressions(c, "_")
     elif nivel == 2:
+        print ("2")
         expressao = expressions(b, "_")
     elif nivel == 3:
+        print("3")
         for c1 in circlelo:
             if c1.valor == a:
+                print("3.1")
                 expressao = expressions("_", b)
             elif c1.valor == b:
+                print("3.2")
                 expressao = expressions(a, "_")
         if coletado % 2 ==0:
             expressao = expressions(a, b)
@@ -360,7 +371,114 @@ def cuts():
         pygame.display.flip()
         if j >= tamanho[nivel-1]:
             break;
+
+#----------------PARTE 2-------------------------------------
+nave1 = pygame.image.load(naves[0])
+
+nave1 = pygame.transform.scale(nave1, ((screen_width//3),(screen_height//3)))
+nave2 = pygame.image.load(naves[1])
+nave2 = pygame.transform.scale(nave2, (((screen_width//3)),(screen_height//3)))
+nave3 = pygame.image.load(naves[2])
+nave3 = pygame.transform.scale(nave3, (((screen_width//3)),(screen_height//3)))
+def choose():
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    return 0
+                elif event.key == pygame.K_2:
+                    return 1
+                elif event.key == pygame.K_3:
+                    return 2
         
+        screen.blit(imagem, (0, 0))
+
+        legenda = font.render('ESCOLHA SUA NAVE:', True, WHITE)
+        screen.blit(legenda, (screen_width / 2 - legenda.get_width() / 2, 200))
+        option1_text = font.render('1 - ', True, WHITE)
+
+        screen.blit(option1_text, (50, 300))
+        screen.blit(nave1, ((option1_text.get_width()/2) - 50, 300))
+
+        option2_text = font.render('2 - ', True, WHITE)
+        screen.blit(option2_text, (nave1.get_width()+ option1_text.get_width()/2, 300))
+        screen.blit(nave2, ((nave1.get_width()+ option1_text.get_width()/2 + option2_text.get_width()/2) - 50, 300))
+
+
+        option3_text = font.render('3 - ', True, WHITE)
+        screen.blit(option3_text, ((nave2.get_width() + nave1.get_width()+ option1_text.get_width()/2 + option2_text.get_width()/2), 300))
+        screen.blit(nave3, ((nave2.get_width() + nave1.get_width()+ option1_text.get_width()/2 + option2_text.get_width()/2 + option2_text.get_width()/2) - 50, 300))
+
+        pygame.display.flip()
+
+def rankdps():
+    one = 1
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        running = False
+            file1 = open('rankings/ranking.txt','r+')
+            file1.seek(0)
+            arr=[0]*11
+            i=0
+            for valorr in file1:
+                arr[i] = valorr
+                i+=1
+                        
+            screen.blit(imagem, (0, 0))
+
+            rank_p = fontG.render('sua pontuação: %d' %placar, True, WHITE)
+            screen.blit(rank_p, (screen_width / 2 - rank_p.get_width() / 2, screen_height*0.3 - 100))
+            pygame.draw.rect(screen, (0, 0, 0), (0, (screen_height - 200), screen_width, screen_height*0.3))
+
+
+            
+            rank_1 = font.render('1 - %s' %arr[0], True, WHITE)
+            screen.blit(rank_1, (rank_1.get_width() / 2, screen_height - 200 + 20))
+
+            rank_2 = font.render('2 - %s' %arr[1], True, WHITE)
+            screen.blit(rank_2, (rank_1.get_width() + rank_2.get_width() / 2, screen_height - 200 + 70))
+
+            rank_3 = font.render('3 - %s' %arr[2], True, WHITE)
+            screen.blit(rank_3, (rank_1.get_width() + rank_2.get_width() + rank_3.get_width() / 2, screen_height - 200  +130))
+
+            
+            
+            
+    
+            pygame.display.flip()
+
+            if one == 1:
+                file1.seek(0)
+                arr2=[0]*11
+                i=0
+                for valorr in file1:
+                    arr2[i] = int(valorr)
+                    i+=1
+                arr2[i]=int(placar)
+                aa=len(arr2)
+                arr2 = sorted(arr2, reverse=True)
+                print(arr2)
+                arr2.pop(aa-1)
+                print(arr2)
+                file1.seek(0)
+                i=0
+                while i<=9:
+                    bb=str("%s \n" %arr2[i])
+                    
+                    file1.write(bb)
+                    i+=1
+                one -=1
+
 def menu():
     running = True
     while running:
@@ -370,11 +488,14 @@ def menu():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
-                    running = False
+                    game()
+                    #running = False
                 elif event.key == pygame.K_2:
                     creditos()
                 elif event.key == pygame.K_3:
                     opcoes()
+                elif event.key == pygame.K_4:
+                    rank()
         
         screen.blit(imagem, (0, 0))
 
@@ -390,8 +511,73 @@ def menu():
         option3_text = font.render('3 - Opções', True, WHITE)
         screen.blit(option3_text, (screen_width / 2 - option3_text.get_width() / 2, 400))
 
+        option4_text = font.render('4 - Ranking', True, WHITE)
+        screen.blit(option4_text, (screen_width / 2 - option4_text.get_width() / 2, 450))
+        
         pygame.display.flip()
 
+def rank():
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        running = False
+            file1 = open('rankings/ranking.txt','r+')
+            file1.seek(0)
+            arr=[0]*11
+            i=0
+            for valorr in file1:
+                arr[i] = valorr
+                i+=1
+                        
+            a = "1 - %s" %arr[0]
+            screen.blit(imagem, (0, 0))
+            rank_1 = fontG.render('1 - %s' %arr[0], True, WHITE)
+            screen.blit(rank_1, (rank_1.get_width() / 2, 200))
+            pygame.draw.rect(screen, (0, 0, 0), (0, (200 + rank_1.get_height()),rank_1.get_width() / 2+ screen_width//2-50,15))
+
+            rank_2 = fontG.render('2 - %s' %arr[1], True, WHITE)
+            screen.blit(rank_2, (rank_2.get_width() / 2, 300))
+            pygame.draw.rect(screen, (0, 0, 0), (0, (300 + rank_2.get_height()),rank_2.get_width() / 2 + screen_width//2-100,10))
+
+            rank_3 = fontG.render('3 - %s' %arr[2], True, WHITE)
+            screen.blit(rank_3, (rank_3.get_width() / 2, 400))
+            pygame.draw.rect(screen, (0, 0, 0), (0, (400 + rank_3.get_height()),rank_3.get_width() / 2 + screen_width//2-150,10))
+
+
+
+            rank_4 = fontP.render('4 - %s' %arr[3], True, WHITE)
+            screen.blit(rank_4, ((screen_width / (4/3)- rank_4.get_width()/2 ), 100))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_4.get_width()/2 ), (100 + rank_4.get_height()), screen_width//2-200,10))
+
+            rank_5 = fontP.render('5 - %s' %arr[4], True, WHITE)
+            screen.blit(rank_5, ((screen_width / (4/3)- rank_5.get_width()/2 ), 175))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_5.get_width()/2 ), (175 + rank_5.get_height()), screen_width//2-200,10))
+
+            rank_6 = fontP.render('6 - %s' %arr[5], True, WHITE)
+            screen.blit(rank_6, ((screen_width / (4/3)- rank_6.get_width()/2 ), 250))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_6.get_width()/2 ), (250 + rank_6.get_height()), screen_width//2-200,10))
+
+            rank_7 = fontP.render('4 - %s' %arr[6], True, WHITE)
+            screen.blit(rank_7, ((screen_width / (4/3)- rank_7.get_width()/2 ), 325))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_7.get_width()/2 ), (325 + rank_7.get_height()), screen_width//2-200,10))
+
+            rank_8 = fontP.render('5 - %s' %arr[7], True, WHITE)
+            screen.blit(rank_8, ((screen_width / (4/3)- rank_8.get_width()/2 ), 400))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_8.get_width()/2 ), (400 + rank_8.get_height()), screen_width//2-200,10))
+
+            rank_9 = fontP.render('6 - %s' %arr[8], True, WHITE)
+            screen.blit(rank_9, ((screen_width / (4/3)- rank_9.get_width()/2 ), 475))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_9.get_width()/2 ), (475 + rank_9.get_height()), screen_width//2-200,10))
+
+            rank_10 = fontP.render('6 - %s' %arr[9], True, WHITE)
+            screen.blit(rank_10, ((screen_width / (4/3)- rank_10.get_width()/2 ), 550))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_10.get_width()/2 ), (550 + rank_10.get_height()), screen_width//2-200,10))
+            pygame.display.flip()
 
 def creditos():
     running = True
@@ -469,188 +655,156 @@ def opcoes():
 
         
     
-def main():
-    menu()
+def game():
+    global nivel
+    nivel = 3
+    global placar
+    placar = 200
+    global coletado
+    coletado = 0
 
+    numColetar = 2
+    ship=naves[choose()]
+    temporizador = 12
 
-if __name__ == "__main__":
-    main()
+    global nave
+    nave = pygame.image.load(ship)
+    nave = pygame.transform.scale(nave, (80, 80))
+    player = Player()
+    all_sprites = pygame.sprite.Group()
+    all_sprites.add(player)
+    
 
-#----------------PARTE 2-------------------------------------
-nave1 = pygame.image.load(naves[0])
+    global a,b,c
+    a,b,c = valoresConta()
+    praCriar() 
+    global expressao
+    expressao = expressions("_","_")
 
-nave1 = pygame.transform.scale(nave1, ((screen_width//3),(screen_height//3)))
-nave2 = pygame.image.load(naves[1])
-nave2 = pygame.transform.scale(nave2, (((screen_width//3)),(screen_height//3)))
-nave3 = pygame.image.load(naves[2])
-nave3 = pygame.transform.scale(nave3, (((screen_width//3)),(screen_height//3)))
-def choose():
-    running = True
-    while running:
+    cutscene = True
+    game_running = True
+    while game_running:
+        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_1:
-                    return 0
-                elif event.key == pygame.K_2:
-                    return 1
-                elif event.key == pygame.K_3:
-                    return 2
-        
+            
+            if event.type == CLOCKTICK:
+                if temporizador != 0:
+                    temporizador = temporizador -1
+                else:
+                    if placar > 0:
+                        placar -=5
+            
+            
+        imagem = defBG()
+
         screen.blit(imagem, (0, 0))
-
-        legenda = font.render('ESCOLHA SUA NAVE:', True, WHITE)
-        screen.blit(legenda, (screen_width / 2 - legenda.get_width() / 2, 200))
-
-        option1_text = font.render('1 - ', True, WHITE)
-        #screen.blit(option1_text, (screen_width / 2 - option1_text.get_width() / 2, 300))
-        #screen.blit(nave1, ((screen_width / 2 - option1_text.get_width()/2 + 50), 300))
-        screen.blit(option1_text, (50, 300))
-        screen.blit(nave1, ((option1_text.get_width()/2) - 50, 300))
-
-        option2_text = font.render('2 - ', True, WHITE)
-        #screen.blit(option2_text, (screen_width / 2 - option2_text.get_width() / 2, 350))
-        #screen.blit(nave2, ((screen_width/2 - option2_text.get_width()/2 ) + 50, 350))
-        screen.blit(option2_text, (nave1.get_width()+ option1_text.get_width()/2, 300))
-        screen.blit(nave2, ((nave1.get_width()+ option1_text.get_width()/2 + option2_text.get_width()/2) - 50, 300))
-
-
-        option3_text = font.render('3 - ', True, WHITE)
-        #screen.blit(option3_text, (screen_width / 2 - option3_text.get_width() / 2, 400))
-        #screen.blit(nave3, ((screen_width/2- option3_text.get_width() / 2 ) + 00, 400))
-        screen.blit(option3_text, ((nave2.get_width() + nave1.get_width()+ option1_text.get_width()/2 + option2_text.get_width()/2), 300))
-        screen.blit(nave3, ((nave2.get_width() + nave1.get_width()+ option1_text.get_width()/2 + option2_text.get_width()/2 + option2_text.get_width()/2) - 50, 300))
-
-        pygame.display.flip()
-
-ship=naves[choose()]
-nave = pygame.image.load(ship)
-nave = pygame.transform.scale(nave, (80, 80))
-player = Player()
-all_sprites = pygame.sprite.Group()
-all_sprites.add(player)
-expressao = expressions("_","_")
-
-cutscene = True
-while True:
-    
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
         
-        if event.type == CLOCKTICK:
-            if temporizador != 0:
-                temporizador = temporizador -1
-            else:
-                if placar > 0:
-                    placar -=5
-        
-        
-    imagem = defBG()
-
-    screen.blit(imagem, (0, 0))
-    
-    if cutscene == True:
-        cuts()
-        cutscene = False
-    screen.blit(bus, ((screen_width/2) - 150, 8))
-    
-
-    all_sprites.update()
-        
-    
-
-    circles.update()
-    circlelo.update()
-    
-
-    if pygame.sprite.spritecollide(player,circlelo, dokill=True):
-        temporizador += 5
-        placar += 10
-        coletado +=1
+        if cutscene == True:
+            cuts()
+            cutscene = False
+        screen.blit(bus, ((screen_width/2) - 150, 8))
         
 
-        if nivel !=3:
-            if coletado == numColetar:   
-                nivel +=1
-                all_sprites.empty()
-                player = Player()
-                all_sprites.add(player)
-                coletado = 0
-                cutscene = True
-            killCircles()
-            correct.play()
-            mostra()
-            a,b,c = valoresConta()
-            praCriar()
-        else:
-            correct.play()
-            mostra()
-            if coletado == (numColetar*2):   
-                nivel +=1
-                coletado = 0
-                cutscene = True
+        all_sprites.update()
+        
+        circles.update()
+        circlelo.update()
+        
 
-            if coletado % 2 ==0:
+        if pygame.sprite.spritecollide(player,circlelo, dokill=True):
+            temporizador += 5
+            placar += 10
+            coletado +=1
+            
+
+            if nivel !=3:
+                if coletado == numColetar:   
+                    nivel +=1
+                    all_sprites.empty()
+                    player = Player()
+                    all_sprites.add(player)
+                    coletado = 0
+                    cutscene = True
                 killCircles()
-                
+                correct.play()
+                mostra()
                 a,b,c = valoresConta()
                 praCriar()
+            else:
+                correct.play()
+                mostra()
+                if coletado == (numColetar*2):   
+                    nivel +=1
+                    coletado = 0
+                    cutscene = True
 
+                if coletado % 2 ==0:
+                    killCircles()
+                    
+                    a,b,c = valoresConta()
+                    praCriar()
+
+            
+                
+            
+
+        elif pygame.sprite.spritecollide(player,circles, dokill=False):
+            if nivel ==3:
+                if coletado % 2 ==1:
+                    coletado -=1
+                    
+            killCircles()           
+            wrong.play()
+            mostraWrong()
+
+            a,b,c = valoresConta()
+            praCriar()
+
+        if nivel == 4:
+            break
         
             
+      
+        score1 = font.render('Placar '+str(placar), True, (WHITE))
+        screen.blit(score1, ((screen_width-200), 50))
         
+        lvlDisplay = font.render('Nivel '+str(nivel), True, (WHITE))
+        screen.blit(lvlDisplay, ((screen_width-198), 100))
+            
+        timer1 = font.render('Tempo ' + str(temporizador), True, (YELLOW))
+        screen.blit(timer1, (50, 50))
 
-    elif pygame.sprite.spritecollide(player,circles, dokill=False):
-        if nivel ==3:
-            if coletado % 2 ==1:
-                coletado -=1
-                
-        killCircles()           
-        wrong.play()
-        mostraWrong()
-
-        a,b,c = valoresConta()
-        praCriar()
-
-    if nivel == 4:
-        break
-    
+        expressao = expressions("_","_")
         
-  
-    score1 = font.render('Placar '+str(placar), True, (WHITE))
-    screen.blit(score1, ((screen_width-200), 50))
-    
-    lvlDisplay = font.render('Nivel '+str(nivel), True, (WHITE))
-    screen.blit(lvlDisplay, ((screen_width-198), 100))
+        Formula = font.render(expressao, True, (BLACK))
+        screen.blit(Formula, ((screen_width/2)- 120, 50))
+
+        for circle1 in circles:
+            screen.blit(circle1.image, circle1.rect)
+
+        for circle1 in circlelo:
+            screen.blit(circle1.image, circle1.rect)
         
-    timer1 = font.render('Tempo ' + str(temporizador), True, (YELLOW))
-    screen.blit(timer1, (50, 50))
+        all_sprites.draw(screen)
+        
+        pygame.display.flip()
 
-    expressao = expressions("_","_")
-    
-    Formula = font.render(expressao, True, (BLACK))
-    screen.blit(Formula, ((screen_width/2)- 120, 50))
+        clock.tick(60)
 
-    for circle1 in circles:
-        screen.blit(circle1.image, circle1.rect)
-
-    for circle1 in circlelo:
-        screen.blit(circle1.image, circle1.rect)
-    
-    all_sprites.draw(screen)
-    
-    pygame.display.flip()
-
-    clock.tick(60)
-
-if cutscene == True:
+    if cutscene == True:
+        print("wow")
         cuts()
         cutscene = False
+    print("wooww2")
+    rankdps()
+menu()
+#if __name__ == "__main__":
+    #main()
+
 
 frame = pygame.draw.rect(screen, (WHITE), Rect((0, 0), (screen_width, screen_height)))
 
