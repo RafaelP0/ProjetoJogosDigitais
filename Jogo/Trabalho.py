@@ -6,6 +6,8 @@ import io
 
 pygame.init()
 
+pygame.mixer.init()
+
 screen_width = 1200
 screen_height = 750
 #screen_height = 800
@@ -607,8 +609,23 @@ def creditos():
         pygame.display.flip()
 
 def opcoes():
+    
+    def ajustar_volume(volume):
+       
+        pygame.mixer.music.set_volume(volume / 100)  
+    
     opcoes_running = True
     opcao_selecionada = 1
+    show_volume_slider = False  
+    volume_slider_width = 200 
+    volume_slider_height = 10  
+    volume_slider_x = screen_width / 2 - volume_slider_width / 2 
+    volume_slider_y = 450  
+    volume_slider_pos = 0
+    volume = 50 
+
+    
+    volume_slider_rect = pygame.Rect(volume_slider_x, volume_slider_y, volume_slider_width, volume_slider_height)
 
     while opcoes_running:
         for event in pygame.event.get():
@@ -626,30 +643,41 @@ def opcoes():
                     opcao_selecionada += 1
                     if opcao_selecionada > 3:
                         opcao_selecionada = 1
+                elif event.key == pygame.K_RETURN:  
+                    if opcao_selecionada == 1:  
+                        show_volume_slider = not show_volume_slider  
+            
+            elif event.type == pygame.MOUSEMOTION:
+                
+                if volume_slider_rect.collidepoint(event.pos) and show_volume_slider:
+                    volume_slider_pos = event.pos[0] - volume_slider_rect.left
+                    volume = int((volume_slider_pos / volume_slider_width) * 100)
+                    ajustar_volume(volume)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1 and volume_slider_rect.collidepoint(event.pos):
+                    volume_slider_pos = event.pos[0] - volume_slider_rect.left
+                    volume = int((volume_slider_pos / volume_slider_width) * 100)
+                    ajustar_volume(volume)
 
         screen.fill(BLACK)
 
-        opcoes_text = font.render('Opções:', True, WHITE)
+        opcoes_text = font.render('Configurações:', True, WHITE)
         screen.blit(opcoes_text, (screen_width / 2 - opcoes_text.get_width() / 2, 200))
 
-        opcao1_text = font.render('1 - Opção 1', True, WHITE)
+        opcao1_text = font.render('1 - Som', True, WHITE)
         screen.blit(opcao1_text, (screen_width / 2 - opcao1_text.get_width() / 2, 300))
-        opcao2_text = font.render('2 - Opção 2', True, WHITE)
-        screen.blit(opcao2_text, (screen_width / 2 - opcao2_text.get_width() / 2, 350))
-        opcao3_text = font.render('3 - Opção 3', True, WHITE)
-        screen.blit(opcao3_text, (screen_width / 2 - opcao3_text.get_width() / 2, 400))
+       
 
         if opcao_selecionada == 1:
             pygame.draw.rect(screen, WHITE, (screen_width / 2 - opcao1_text.get_width() / 2 - 10, 295,
                                               opcao1_text.get_width() + 20, opcao1_text.get_height()), 2)
-        elif opcao_selecionada == 2:
-            pygame.draw.rect(screen, WHITE, (screen_width / 2 - opcao2_text.get_width() / 2 - 10, 345,
-                                              opcao2_text.get_width() + 20, opcao2_text.get_height()), 2)
-        elif opcao_selecionada == 3:
-            pygame.draw.rect(screen, WHITE, (screen_width / 2 - opcao3_text.get_width() / 2 - 10, 395,
-                                              opcao3_text.get_width() + 20, opcao3_text.get_height()), 2)
+            if show_volume_slider:  
+                pygame.draw.rect(screen, WHITE, volume_slider_rect)
+                pygame.draw.circle(screen, WHITE, (volume_slider_rect.left + volume_slider_pos, volume_slider_rect.centery), 10)
+                volume_text = font.render('Volume: {}'.format(volume), True, WHITE)
+                screen.blit(volume_text, (volume_slider_rect.right + 20, volume_slider_rect.top))
 
-        pygame.display.flip()
+        pygame.display.flip() 
 
 
 
