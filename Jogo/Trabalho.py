@@ -276,7 +276,7 @@ def expressions(h, e):
     if nivel == 1:
         return (f"{a} + {b} = {h}")
     elif nivel == 2:
-        return (f"{Aa} + {h} = {c}")
+        return (f"{a} + {h} = {c}")
     elif nivel == 3:
         return (f"{h} + {e} = {c}")
     
