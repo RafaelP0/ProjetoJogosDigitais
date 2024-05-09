@@ -8,14 +8,11 @@ pygame.init()
 
 screen_width = 1200
 screen_height = 750
-#screen_height = 800
 size = (screen_width, screen_height)
 screen = pygame.display.set_mode(size)
 
-pygame.display.set_caption("Matematica espacial")
+pygame.display.set_caption("Entrega Especial (Math edition)")
 
-#imagem = pygame.image.load("img/imagem_fundo.png")
-#imagem = pygame.transform.scale(imagem, (size))
 
 pacote = pygame.image.load("sprites/pacote.png")
 	
@@ -25,13 +22,13 @@ redX = pygame.image.load("img/X.png")
 redX = pygame.transform.scale(redX, (180, 70))
 
 bus = pygame.image.load("sprites/bus.png")
-#bus = pygame.transform.scale(bus, (550, 170))
+
 
 Pacotes=[]
 Pacotes=["sprites/pacotes/pacote0.png","sprites/pacotes/pacote1.png", "sprites/pacotes/pacote2.png", "sprites/pacotes/pacote3.png","sprites/pacotes/pacote4.png", "sprites/pacotes/pacote5.png", "sprites/pacotes/pacote6.png", "sprites/pacotes/pacote7.png", "sprites/pacotes/pacote8.png", "sprites/pacotes/pacote9.png", "sprites/pacotes/pacote10.png", "sprites/pacotes/pacote11.png", "sprites/pacotes/pacote12.png", "sprites/pacotes/pacote13.png", "sprites/pacotes/pacote14.png", "sprites/pacotes/pacote15.png", "sprites/pacotes/pacote16.png", "sprites/pacotes/pacote17.png", "sprites/pacotes/pacote18.png",]
 
 bgImg=[]
-bgImg=["img/imagem_fundo1.jpg","img/imagem_fundo2.jpg","img/imagem_fundo3.jpg"]
+bgImg=["img/imagem_fundo1.png","img/imagem_fundo2.png","img/imagem_fundo3.png","img/imagem_fundo4.jpg"]
 
 
 naves=[]
@@ -48,17 +45,16 @@ bossLeft=pygame.image.load("sprites/npc/bossL.png")
 bossLeft = pygame.transform.scale(bossLeft, (400, 300))
 
 correct=mixer.Sound("Audio/Sound/correct.wav")
-#correct.set_volume(0.2)
 
 wrong=mixer.Sound("Audio/Sound/wrong.wav")
 wrong.set_volume(0.5)
 
-# background music
-mixer.music.load("Audio/Music/Wii.mp3")
-mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.5)
 
 
+lvlMusic=[]
+lvlMusic=["Audio/Music/SF-Tit.mp3","Audio/Music/SF-eb.mp3","Audio/Music/RR.mp3", "Audio/Music/Fanfare.mp3"]
+
+    
 BLACK  = (0, 0, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
@@ -71,13 +67,9 @@ font = pygame.font.SysFont('sans',40)
 fontP = pygame.font.SysFont('sans',35)
 
 placar = 200
-#men = 0
 coletado = 0
 
-#for testing
-#Nivel que começa
 nivel = 1
-#Numero de caixa a coletar
 numColetar = 2
 
 def defBG():
@@ -227,8 +219,8 @@ def create_circle(values):
         
         Y_vermelho = randint(40, (screen_height - 50))
 
-        if X_vermelho >= screen_width/2 - 100 and X_vermelho <= screen_width/2 + 100:
-            while Y_vermelho >= screen_height*0.9/2 - 100 and Y_vermelho <= screen_height*0.9/2 + 100:
+        if X_vermelho >= screen_width/2 - 150 and X_vermelho <= screen_width/2 + 150:
+            while Y_vermelho >= screen_height*0.9 - 150 and Y_vermelho <= screen_height*0.9 + 150:
                 Y_vermelho = randint(40, (screen_height - 50))
                 
         raio = 20
@@ -258,15 +250,10 @@ def create_circle(values):
 circles = pygame.sprite.Group()  
 circlelo = pygame.sprite.Group()  
 
-
-
-
-
 clock = pygame.time.Clock()
 
 CLOCKTICK = pygame.USEREVENT+1
 pygame.time.set_timer(CLOCKTICK, 1000) 
-#temporizador = 12
 
 def killCircles():
     circles.empty()
@@ -284,19 +271,14 @@ def mostra():
     tempp=1
     
     if nivel == 1:
-        print ("1")
         expressao = expressions(c, "_")
     elif nivel == 2:
-        print ("2")
         expressao = expressions(b, "_")
     elif nivel == 3:
-        print("3")
         for c1 in circlelo:
             if c1.valor == a:
-                print("3.1")
                 expressao = expressions("_", b)
             elif c1.valor == b:
-                print("3.2")
                 expressao = expressions(a, "_")
         if coletado % 2 ==0:
             expressao = expressions(a, b)
@@ -322,7 +304,6 @@ def mostraWrong():
             if event.type == CLOCKTICK:
                 tempp-=1
 
-imagem = defBG()
 def writeCuts(array,i):
     aa=i
     z=array[aa]
@@ -354,13 +335,17 @@ def cuts():
     arr=[None]*100
     i=0
     tamanho=[]
-    tamanho=[16,6,12,23]
+    tamanho=[16,9,12,27]
     for valorr in file1:
         arr[i] = valorr
         i+=1
-    
+    imagem = defBG()
+    mixer.music.load("Audio/Music/SF-Title.mp3")
+    mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.5)
     j=0
     while j <=tamanho[nivel-1]:
+        
         screen.blit(imagem, (0, 0))
         loadChars()
         pygame.draw.rect(screen, (0, 0, 0), (0, (screen_height - 200), screen_width, screen_height*0.3))
@@ -370,11 +355,12 @@ def cuts():
                 j+=3
         pygame.display.flip()
         if j >= tamanho[nivel-1]:
+            music()
+
+
             break;
 
-#----------------PARTE 2-------------------------------------
 nave1 = pygame.image.load(naves[0])
-
 nave1 = pygame.transform.scale(nave1, ((screen_width//3),(screen_height//3)))
 nave2 = pygame.image.load(naves[1])
 nave2 = pygame.transform.scale(nave2, (((screen_width//3)),(screen_height//3)))
@@ -395,6 +381,8 @@ def choose():
                 elif event.key == pygame.K_3:
                     return 2
         
+        imagem = pygame.image.load('img/hangar.png')
+        imagem = pygame.transform.scale(imagem, (size))
         screen.blit(imagem, (0, 0))
 
         legenda = font.render('ESCOLHA SUA NAVE:', True, WHITE)
@@ -415,6 +403,59 @@ def choose():
 
         pygame.display.flip()
 
+def music():
+    msk=lvlMusic[nivel-1]
+    mixer.music.load(msk)
+    mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.5)
+    
+def chooseLvl():
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    return 1
+                elif event.key == pygame.K_2:
+                    return 2
+                elif event.key == pygame.K_3:
+                    return 3
+
+        bg1 = pygame.image.load(bgImg[0])
+        bg1 = pygame.transform.scale(bg1, (size))
+        bg2 = pygame.image.load(bgImg[1])
+        bg2 = pygame.transform.scale(bg2, (size))
+        bg3 = pygame.image.load(bgImg[2])
+        bg3 = pygame.transform.scale(bg3, (size))
+        screen.blit(bg1, (0, 0))
+        screen.blit(bg2, (screen_width//3, 0))
+        screen.blit(bg3, ((screen_width//3)*2, 0))
+
+        legenda = font.render('SELCIONE O NIVEL:', True, WHITE)
+        
+        screen.blit(legenda, (screen_width / 2 - legenda.get_width() / 2, 50))
+        
+        option1_text = font.render('1 ', True, WHITE)
+        screen.blit(option1_text, (screen_width//6, 300))
+        expressao1 = fontG.render('7 + 3 = _', True, WHITE)
+        screen.blit(expressao1, ((screen_width//6 - expressao1.get_width()/2, 450)))
+
+        option2_text = font.render('2 ', True, WHITE)
+        screen.blit(option2_text, (screen_width//2, 300))
+        expressao2 = fontG.render('7 + _ = 10', True, WHITE)
+        screen.blit(expressao2, ((screen_width//2 - expressao2.get_width()/2, 450)))
+
+
+        option3_text = font.render('3 ', True, WHITE)
+        screen.blit(option3_text, ((screen_width//6)*5, 300))
+        expressao3 = fontG.render('_ + _ = 10', True, WHITE)
+        screen.blit(expressao3, (((screen_width//6)*5 - expressao3.get_width()/2, 450)))
+
+        pygame.display.flip()
+        
 def rankdps():
     one = 1
     running = True
@@ -434,6 +475,8 @@ def rankdps():
                 arr[i] = valorr
                 i+=1
                         
+            imagem = pygame.image.load('img/rankBg.jpg')
+            imagem = pygame.transform.scale(imagem, (size))
             screen.blit(imagem, (0, 0))
 
             rank_p = fontG.render('sua pontuação: %d' %placar, True, WHITE)
@@ -467,9 +510,7 @@ def rankdps():
                 arr2[i]=int(placar)
                 aa=len(arr2)
                 arr2 = sorted(arr2, reverse=True)
-                print(arr2)
                 arr2.pop(aa-1)
-                print(arr2)
                 file1.seek(0)
                 i=0
                 while i<=9:
@@ -481,6 +522,9 @@ def rankdps():
 
 def menu():
     running = True
+    mixer.music.load("Audio/Music/SF-Corn.mp3")
+    mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.5)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -489,30 +533,43 @@ def menu():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
                     game()
-                    #running = False
                 elif event.key == pygame.K_2:
                     creditos()
                 elif event.key == pygame.K_3:
                     opcoes()
                 elif event.key == pygame.K_4:
                     rank()
+                elif event.key == pygame.K_5:
+                    pygame.quit()
+                    sys.exit()
         
+        imagem = pygame.image.load('img/title.png')
+        imagem = pygame.transform.scale(imagem, (size))
         screen.blit(imagem, (0, 0))
 
-        menu_text = font.render('Menu:', True, WHITE)
-        screen.blit(menu_text, (screen_width / 2 - menu_text.get_width() / 2, 200))
+        option1_text = font.render('1 - Iniciar Jogo', True, BLACK)
+        pygame.draw.rect(screen, (WHITE), (screen_width / 2 - option1_text.get_width() / 2 - 5, 345, option1_text.get_width() +15, option1_text.get_height() + 15))
+        screen.blit(option1_text, (screen_width / 2 - option1_text.get_width() / 2, 350))
 
-        option1_text = font.render('1 - Iniciar Jogo', True, WHITE)
-        screen.blit(option1_text, (screen_width / 2 - option1_text.get_width() / 2, 300))
+        option2_text = font.render('2 - Créditos', True, BLACK)
 
-        option2_text = font.render('2 - Créditos', True, WHITE)
-        screen.blit(option2_text, (screen_width / 2 - option2_text.get_width() / 2, 350))
+        pygame.draw.rect(screen, (WHITE), (screen_width / 2 - option2_text.get_width() / 2 - 5, 415, option2_text.get_width() +15, option2_text.get_height() + 15))
+        screen.blit(option2_text, (screen_width / 2 - option2_text.get_width() / 2, 420))
 
-        option3_text = font.render('3 - Opções', True, WHITE)
-        screen.blit(option3_text, (screen_width / 2 - option3_text.get_width() / 2, 400))
+        option3_text = font.render('3 - Opções', True, BLACK)
+        pygame.draw.rect(screen, (WHITE), (screen_width / 2 - option3_text.get_width() / 2 - 5, 485, option3_text.get_width() +15, option3_text.get_height() + 15))
 
-        option4_text = font.render('4 - Ranking', True, WHITE)
-        screen.blit(option4_text, (screen_width / 2 - option4_text.get_width() / 2, 450))
+        screen.blit(option3_text, (screen_width / 2 - option3_text.get_width() / 2, 490))
+
+        option4_text = font.render('4 - Ranking', True, BLACK)
+        pygame.draw.rect(screen, (WHITE), (screen_width / 2 - option4_text.get_width() / 2 - 5, 555, option4_text.get_width() +15, option4_text.get_height() + 15))
+
+        screen.blit(option4_text, (screen_width / 2 - option4_text.get_width() / 2, 560))
+
+        option5_text = font.render('5 - Sair', True, BLACK)
+        pygame.draw.rect(screen, (WHITE), (screen_width / 2 - option5_text.get_width() / 2 - 5, 625, option5_text.get_width() +15, option5_text.get_height() + 15))
+
+        screen.blit(option5_text, (screen_width / 2 - option5_text.get_width() / 2, 630))
         
         pygame.display.flip()
 
@@ -533,8 +590,9 @@ def rank():
             for valorr in file1:
                 arr[i] = valorr
                 i+=1
-                        
-            a = "1 - %s" %arr[0]
+
+            imagem = pygame.image.load('img/rankBg.jpg')
+            imagem = pygame.transform.scale(imagem, (size))
             screen.blit(imagem, (0, 0))
             rank_1 = fontG.render('1 - %s' %arr[0], True, WHITE)
             screen.blit(rank_1, (rank_1.get_width() / 2, 200))
@@ -581,6 +639,9 @@ def rank():
 
 def creditos():
     running = True
+    mixer.music.load("Audio/Music/OoT-ToT.mp3")
+    mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.5)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -589,26 +650,49 @@ def creditos():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-
+        
         screen.fill(BLACK)
+        imagem = pygame.image.load('img/mack1.jpg')
+        imagem = pygame.transform.scale(imagem, (size))
+        screen.blit(imagem, (0, 0))
+        imagem2 = pygame.image.load('img/mack3.png')
+        imagem2 = pygame.transform.scale(imagem2, (500, 150))
+        
+        
+        screen.blit(imagem2, ((screen_width/2 - imagem2.get_width()/2),10))
 
-        creditos_text = font.render('Créditos:', True, WHITE)
+        creditos_text = font.render('Créditos:', True, BLACK)
         screen.blit(creditos_text, (screen_width / 2 - creditos_text.get_width() / 2, 200))
 
-        nome1_text = font.render('Nome: Gabriel Rezende Rangel Santana RA: 10331989', True, WHITE)
+        nome1_text = font.render('Nome: Gabriel Rezende Rangel Santana RA: 10331989', True, BLACK)
         screen.blit(nome1_text, (screen_width / 2 - nome1_text.get_width() / 2, 250))
 
-        nome2_text = font.render('Nome: João Paulo Ladeia Santana RA: 10401026', True, WHITE)
+        nome2_text = font.render('Nome: João Paulo Ladeia Santana RA: 10401026', True, BLACK)
         screen.blit(nome2_text, (screen_width / 2 - nome2_text.get_width() / 2, 300))
 
-        nome3_text = font.render('Nome: Rafael Junqueira Pezeiro RA: 10374627', True, WHITE)
+        nome3_text = font.render('Nome: Rafael Junqueira Pezeiro RA: 10374627', True, BLACK)
         screen.blit(nome3_text, (screen_width / 2 - nome3_text.get_width() / 2, 350))
 
         pygame.display.flip()
 
 def opcoes():
+    
+    def ajustar_volume(volume):
+       
+        pygame.mixer.music.set_volume(volume / 100)  
+    
     opcoes_running = True
     opcao_selecionada = 1
+    show_volume_slider = False  
+    volume_slider_width = 200 
+    volume_slider_height = 10  
+    volume_slider_x = screen_width / 2 - volume_slider_width / 2 
+    volume_slider_y = 450  
+    volume_slider_pos = 0
+    volume = 50 
+
+    
+    volume_slider_rect = pygame.Rect(volume_slider_x, volume_slider_y, volume_slider_width, volume_slider_height)
 
     while opcoes_running:
         for event in pygame.event.get():
@@ -626,30 +710,46 @@ def opcoes():
                     opcao_selecionada += 1
                     if opcao_selecionada > 3:
                         opcao_selecionada = 1
+                elif event.key == pygame.K_RETURN:  
+                    if opcao_selecionada == 1:  
+                        show_volume_slider = not show_volume_slider
+                        
+
+            elif event.type == pygame.MOUSEMOTION:
+                
+                if volume_slider_rect.collidepoint(event.pos) and show_volume_slider:
+                    volume_slider_pos = event.pos[0] - volume_slider_rect.left
+                    volume = int((volume_slider_pos / volume_slider_width) * 100)
+                    ajustar_volume(volume)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1 and volume_slider_rect.collidepoint(event.pos):
+                    volume_slider_pos = event.pos[0] - volume_slider_rect.left
+                    volume = int((volume_slider_pos / volume_slider_width) * 100)
+                    ajustar_volume(volume)
 
         screen.fill(BLACK)
+        imagem = pygame.image.load('img/optBg.jpg')
+        imagem = pygame.transform.scale(imagem, (size))
+        screen.blit(imagem, (0, 0))
 
-        opcoes_text = font.render('Opções:', True, WHITE)
+        opcoes_text = font.render('Configurações:', True, WHITE)
         screen.blit(opcoes_text, (screen_width / 2 - opcoes_text.get_width() / 2, 200))
 
-        opcao1_text = font.render('1 - Opção 1', True, WHITE)
+        opcao1_text = font.render('1 - Som', True, WHITE)
         screen.blit(opcao1_text, (screen_width / 2 - opcao1_text.get_width() / 2, 300))
-        opcao2_text = font.render('2 - Opção 2', True, WHITE)
-        screen.blit(opcao2_text, (screen_width / 2 - opcao2_text.get_width() / 2, 350))
-        opcao3_text = font.render('3 - Opção 3', True, WHITE)
-        screen.blit(opcao3_text, (screen_width / 2 - opcao3_text.get_width() / 2, 400))
+       
 
         if opcao_selecionada == 1:
             pygame.draw.rect(screen, WHITE, (screen_width / 2 - opcao1_text.get_width() / 2 - 10, 295,
                                               opcao1_text.get_width() + 20, opcao1_text.get_height()), 2)
-        elif opcao_selecionada == 2:
-            pygame.draw.rect(screen, WHITE, (screen_width / 2 - opcao2_text.get_width() / 2 - 10, 345,
-                                              opcao2_text.get_width() + 20, opcao2_text.get_height()), 2)
-        elif opcao_selecionada == 3:
-            pygame.draw.rect(screen, WHITE, (screen_width / 2 - opcao3_text.get_width() / 2 - 10, 395,
-                                              opcao3_text.get_width() + 20, opcao3_text.get_height()), 2)
+            if show_volume_slider:  
+                pygame.draw.rect(screen, WHITE, volume_slider_rect)
+                pygame.draw.circle(screen, WHITE, (volume_slider_rect.left + volume_slider_pos, volume_slider_rect.centery), 10)
+                volume_text = font.render('Volume: {}'.format(volume), True, WHITE)
+                screen.blit(volume_text, (volume_slider_rect.right + 20, volume_slider_rect.top))
 
-        pygame.display.flip()
+        pygame.display.flip() 
+    
 
 
 
@@ -657,12 +757,12 @@ def opcoes():
     
 def game():
     global nivel
-    nivel = 3
+    nivel = chooseLvl()
     global placar
     placar = 200
     global coletado
     coletado = 0
-
+    
     numColetar = 2
     ship=naves[choose()]
     temporizador = 12
@@ -682,7 +782,7 @@ def game():
     expressao = expressions("_","_")
 
     cutscene = True
-    game_running = True
+    game_running=True
     while game_running:
         
 
@@ -716,7 +816,7 @@ def game():
         
 
         if pygame.sprite.spritecollide(player,circlelo, dokill=True):
-            temporizador += 5
+            temporizador += 7
             placar += 10
             coletado +=1
             
@@ -724,12 +824,16 @@ def game():
             if nivel !=3:
                 if coletado == numColetar:   
                     nivel +=1
-                    all_sprites.empty()
-                    player = Player()
-                    all_sprites.add(player)
+                    
                     coletado = 0
                     cutscene = True
+
+
+                all_sprites.empty()
                 killCircles()
+                player = Player()
+                all_sprites.add(player)
+                
                 correct.play()
                 mostra()
                 a,b,c = valoresConta()
@@ -741,9 +845,13 @@ def game():
                     nivel +=1
                     coletado = 0
                     cutscene = True
+                    
 
-                if coletado % 2 ==0:
+                elif coletado % 2 ==0:
                     killCircles()
+                    all_sprites.empty()
+                    player = Player()
+                    all_sprites.add(player)
                     
                     a,b,c = valoresConta()
                     praCriar()
@@ -756,8 +864,12 @@ def game():
             if nivel ==3:
                 if coletado % 2 ==1:
                     coletado -=1
+            all_sprites.empty()
+            killCircles()   
+            player = Player()
+            all_sprites.add(player)
                     
-            killCircles()           
+                    
             wrong.play()
             mostraWrong()
 
@@ -775,8 +887,8 @@ def game():
         lvlDisplay = font.render('Nivel '+str(nivel), True, (WHITE))
         screen.blit(lvlDisplay, ((screen_width-198), 100))
             
-        timer1 = font.render('Tempo ' + str(temporizador), True, (YELLOW))
-        screen.blit(timer1, (50, 50))
+        #timer1 = font.render('Tempo ' + str(temporizador), True, (YELLOW))
+        #screen.blit(timer1, (50, 50))
 
         expressao = expressions("_","_")
         
@@ -796,20 +908,17 @@ def game():
         clock.tick(60)
 
     if cutscene == True:
-        print("wow")
         cuts()
         cutscene = False
-    print("wooww2")
     rankdps()
 menu()
-#if __name__ == "__main__":
-    #main()
+
 
 
 frame = pygame.draw.rect(screen, (WHITE), Rect((0, 0), (screen_width, screen_height)))
 
 
-textofinal = font.render('Fim de Jogo - Placar final: ' + str(placar), True, (RED))
+textofinal = font.render('Obrigado por Jogar! :D ' + str(placar), True, (RED))
 size = font.size(str(textofinal))
 screen.blit(textofinal, (size[0]/2., size[1]/2.))
 
