@@ -61,6 +61,9 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+RANKCOLOR= (229,215,27)
+PURPLE=(102,0,102)
+BROWN=(51,25,0)
 
 fontG = pygame.font.SysFont('sans',60)
 font = pygame.font.SysFont('sans',40)
@@ -312,11 +315,11 @@ def writeCuts(array,i):
     aa+=1
     c=array[aa]
     texto1 = font.render(z, True, (WHITE))
-    screen.blit(texto1, (50, (screen_height - 150)))
+    screen.blit(texto1, (30, (screen_height - 180)))
     texto2 = font.render(x, True, (WHITE))
-    screen.blit(texto2, (50, (screen_height - 100)))
+    screen.blit(texto2, (30, (screen_height - 130)))
     texto3 = font.render(c, True, (WHITE))
-    screen.blit(texto3, (50, (screen_height - 50)))
+    screen.blit(texto3, (30, (screen_height - 80)))
 
 
 def loadChars():
@@ -338,6 +341,8 @@ def cuts():
     tamanho=[16,9,12,27]
     for valorr in file1:
         arr[i] = valorr
+        arr[i]=arr[i][:-1]
+
         i+=1
     imagem = defBG()
     mixer.music.load("Audio/Music/SF-Title.mp3")
@@ -589,52 +594,67 @@ def rank():
             i=0
             for valorr in file1:
                 arr[i] = valorr
+                arr[i]=arr[i][:-1]
                 i+=1
 
             imagem = pygame.image.load('img/rankBg.jpg')
             imagem = pygame.transform.scale(imagem, (size))
             screen.blit(imagem, (0, 0))
-            rank_1 = fontG.render('1 - %s' %arr[0], True, WHITE)
-            screen.blit(rank_1, (rank_1.get_width() / 2, 200))
-            pygame.draw.rect(screen, (0, 0, 0), (0, (200 + rank_1.get_height()),rank_1.get_width() / 2+ screen_width//2-50,15))
+            rank_1 = fontG.render('1 - %s' %arr[0], True, RANKCOLOR)
+            screen.blit(rank_1, (screen_width//2-rank_1.get_width(), 200))
+            pygame.draw.rect(screen, (BLUE), (0, (200 + rank_1.get_height()),rank_1.get_width() / 2+ screen_width//2-80,15))
+            pygame.draw.rect(screen, (0, 0, 0), (0, (200 + rank_1.get_height()),rank_1.get_width() / 2+ screen_width//2-50,10))
 
-            rank_2 = fontG.render('2 - %s' %arr[1], True, WHITE)
-            screen.blit(rank_2, (rank_2.get_width() / 2, 300))
+            rank_2 = fontG.render('2 - %s' %arr[1], True, RANKCOLOR)
+            screen.blit(rank_2, ( screen_width//2- rank_2.get_width() -20, 300))
+            
+            pygame.draw.rect(screen, (BLUE), (0, (300 + rank_2.get_height()),rank_2.get_width() / 2 + screen_width//2-130,15))
             pygame.draw.rect(screen, (0, 0, 0), (0, (300 + rank_2.get_height()),rank_2.get_width() / 2 + screen_width//2-100,10))
 
-            rank_3 = fontG.render('3 - %s' %arr[2], True, WHITE)
-            screen.blit(rank_3, (rank_3.get_width() / 2, 400))
+            rank_3 = fontG.render('3 - %s' %arr[2], True, RANKCOLOR)
+            screen.blit(rank_3, (screen_width//2- rank_3.get_width() -40, 400))
+            pygame.draw.rect(screen, (BLUE), (0, (400 + rank_3.get_height()),rank_3.get_width() / 2 + screen_width//2-180,15))
             pygame.draw.rect(screen, (0, 0, 0), (0, (400 + rank_3.get_height()),rank_3.get_width() / 2 + screen_width//2-150,10))
 
 
 
-            rank_4 = fontP.render('4 - %s' %arr[3], True, WHITE)
-            screen.blit(rank_4, ((screen_width / (4/3)- rank_4.get_width()/2 ), 100))
-            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_4.get_width()/2 ), (100 + rank_4.get_height()), screen_width//2-200,10))
+        
 
-            rank_5 = fontP.render('5 - %s' %arr[4], True, WHITE)
-            screen.blit(rank_5, ((screen_width / (4/3)- rank_5.get_width()/2 ), 175))
-            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_5.get_width()/2 ), (175 + rank_5.get_height()), screen_width//2-200,10))
+            rank_4 = fontP.render('4 - %s' %arr[3], True, RANKCOLOR)
+            screen.blit(rank_4, ((screen_width - rank_4.get_width() )-10, 100))
+            pygame.draw.rect(screen, (BROWN), ((screen_width / (4/3)- rank_4.get_width()/2 )+130, (100 + rank_4.get_height()), screen_width//2-200,15))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_4.get_width()/2 )+90, (100 + rank_4.get_height()), screen_width//2-200,10))
 
-            rank_6 = fontP.render('6 - %s' %arr[5], True, WHITE)
-            screen.blit(rank_6, ((screen_width / (4/3)- rank_6.get_width()/2 ), 250))
-            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_6.get_width()/2 ), (250 + rank_6.get_height()), screen_width//2-200,10))
+            rank_5 = fontP.render('5 - %s' %arr[4], True, RANKCOLOR)
+            screen.blit(rank_5, ((screen_width- rank_5.get_width() )-10, 175))
+            pygame.draw.rect(screen, (BROWN), ((screen_width / (4/3)- rank_5.get_width()/2 )+150, (175 + rank_5.get_height()), screen_width//2-200,15))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_5.get_width()/2 )+110, (175 + rank_5.get_height()), screen_width//2-200,10))
+            
+            rank_6 = fontP.render('6 - %s' %arr[5], True, RANKCOLOR)
+            screen.blit(rank_6, ((screen_width- rank_6.get_width() )-10, 250))
+            pygame.draw.rect(screen, (BROWN), ((screen_width / (4/3)- rank_6.get_width()/2 )+170, (250 + rank_6.get_height()), screen_width//2-200,15))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_6.get_width()/2 )+130, (250 + rank_6.get_height()), screen_width//2-200,10))
 
-            rank_7 = fontP.render('7 - %s' %arr[6], True, WHITE)
-            screen.blit(rank_7, ((screen_width / (4/3)- rank_7.get_width()/2 ), 325))
-            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_7.get_width()/2 ), (325 + rank_7.get_height()), screen_width//2-200,10))
-
-            rank_8 = fontP.render('8 - %s' %arr[7], True, WHITE)
-            screen.blit(rank_8, ((screen_width / (4/3)- rank_8.get_width()/2 ), 400))
-            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_8.get_width()/2 ), (400 + rank_8.get_height()), screen_width//2-200,10))
-
-            rank_9 = fontP.render('9 - %s' %arr[8], True, WHITE)
-            screen.blit(rank_9, ((screen_width / (4/3)- rank_9.get_width()/2 ), 475))
-            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_9.get_width()/2 ), (475 + rank_9.get_height()), screen_width//2-200,10))
-
-            rank_10 = fontP.render('10 - %s' %arr[9], True, WHITE)
-            screen.blit(rank_10, ((screen_width / (4/3)- rank_10.get_width()/2 ), 550))
-            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_10.get_width()/2 ), (550 + rank_10.get_height()), screen_width//2-200,10))
+            rank_7 = fontP.render('7 - %s' %arr[6], True, RANKCOLOR)
+            screen.blit(rank_7, ((screen_width - rank_7.get_width() )-10, 325))
+            pygame.draw.rect(screen, (BROWN), ((screen_width / (4/3)- rank_7.get_width()/2 )+190, (325 + rank_7.get_height()), screen_width//2-200,15))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_7.get_width()/2 )+150, (325 + rank_7.get_height()), screen_width//2-200,10))
+            
+            rank_8 = fontP.render('8 - %s' %arr[7], True, RANKCOLOR)
+            screen.blit(rank_8, ((screen_width - rank_8.get_width() )-10, 400))
+            pygame.draw.rect(screen, (BROWN), ((screen_width / (4/3)- rank_8.get_width()/2 )+210, (400 + rank_8.get_height()), screen_width//2-200,15))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_8.get_width()/2 )+170, (400 + rank_8.get_height()), screen_width//2-200,10))
+            
+            rank_9 = fontP.render('9 - %s' %arr[8], True, RANKCOLOR)
+            screen.blit(rank_9, ((screen_width - rank_9.get_width() )-10, 475))
+            pygame.draw.rect(screen, (BROWN), ((screen_width / (4/3)- rank_9.get_width()/2 )+230, (475 + rank_9.get_height()), screen_width//2-200,15))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_9.get_width()/2 )+190, (475 + rank_9.get_height()), screen_width//2-200,10))
+            
+            rank_10 = fontP.render('10 - %s' %arr[9], True, RANKCOLOR)
+            screen.blit(rank_10, ((screen_width - rank_10.get_width() )-10, 550))
+            pygame.draw.rect(screen, (BROWN), ((screen_width / (4/3)- rank_10.get_width()/2 )+250, (550 + rank_10.get_height()), screen_width//2-200,15))
+            pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_10.get_width()/2 )+210, (550 + rank_10.get_height()), screen_width//2-200,10))
+            
             pygame.display.flip()
 
 def creditos():
