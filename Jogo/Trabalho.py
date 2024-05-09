@@ -70,7 +70,7 @@ placar = 200
 coletado = 0
 
 nivel = 1
-numColetar = 2
+numColetar = 3
 
 def defBG():
     imagem = pygame.image.load(bgImg[nivel-1])
