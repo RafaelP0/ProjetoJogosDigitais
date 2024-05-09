@@ -562,19 +562,19 @@ def rank():
             screen.blit(rank_6, ((screen_width / (4/3)- rank_6.get_width()/2 ), 250))
             pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_6.get_width()/2 ), (250 + rank_6.get_height()), screen_width//2-200,10))
 
-            rank_7 = fontP.render('4 - %s' %arr[6], True, WHITE)
+            rank_7 = fontP.render('7 - %s' %arr[6], True, WHITE)
             screen.blit(rank_7, ((screen_width / (4/3)- rank_7.get_width()/2 ), 325))
             pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_7.get_width()/2 ), (325 + rank_7.get_height()), screen_width//2-200,10))
 
-            rank_8 = fontP.render('5 - %s' %arr[7], True, WHITE)
+            rank_8 = fontP.render('8 - %s' %arr[7], True, WHITE)
             screen.blit(rank_8, ((screen_width / (4/3)- rank_8.get_width()/2 ), 400))
             pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_8.get_width()/2 ), (400 + rank_8.get_height()), screen_width//2-200,10))
 
-            rank_9 = fontP.render('6 - %s' %arr[8], True, WHITE)
+            rank_9 = fontP.render('9 - %s' %arr[8], True, WHITE)
             screen.blit(rank_9, ((screen_width / (4/3)- rank_9.get_width()/2 ), 475))
             pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_9.get_width()/2 ), (475 + rank_9.get_height()), screen_width//2-200,10))
 
-            rank_10 = fontP.render('6 - %s' %arr[9], True, WHITE)
+            rank_10 = fontP.render('10 - %s' %arr[9], True, WHITE)
             screen.blit(rank_10, ((screen_width / (4/3)- rank_10.get_width()/2 ), 550))
             pygame.draw.rect(screen, (0, 0, 0), ((screen_width / (4/3)- rank_10.get_width()/2 ), (550 + rank_10.get_height()), screen_width//2-200,10))
             pygame.display.flip()
