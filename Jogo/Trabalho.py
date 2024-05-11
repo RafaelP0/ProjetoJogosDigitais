@@ -28,7 +28,7 @@ Pacotes=[]
 Pacotes=["sprites/pacotes/pacote0.png","sprites/pacotes/pacote1.png", "sprites/pacotes/pacote2.png", "sprites/pacotes/pacote3.png","sprites/pacotes/pacote4.png", "sprites/pacotes/pacote5.png", "sprites/pacotes/pacote6.png", "sprites/pacotes/pacote7.png", "sprites/pacotes/pacote8.png", "sprites/pacotes/pacote9.png", "sprites/pacotes/pacote10.png", "sprites/pacotes/pacote11.png", "sprites/pacotes/pacote12.png", "sprites/pacotes/pacote13.png", "sprites/pacotes/pacote14.png", "sprites/pacotes/pacote15.png", "sprites/pacotes/pacote16.png", "sprites/pacotes/pacote17.png", "sprites/pacotes/pacote18.png",]
 
 bgImg=[]
-bgImg=["img/imagem_fundo1.png","img/imagem_fundo2.png","img/imagem_fundo3.png","img/imagem_fundo4.jpg"]
+bgImg=["img/imagem_fundo1.png","img/imagem_fundo2.jpg","img/imagem_fundo3.png","img/imagem_fundo4.jpg"]
 
 
 naves=[]
@@ -307,6 +307,73 @@ def mostraWrong():
             if event.type == CLOCKTICK:
                 tempp-=1
 
+
+
+
+
+def tut1():
+    imagem = pygame.image.load("img/Tut1.png")
+    imagem = pygame.transform.scale(imagem, (size))
+
+    evan = pygame.transform.scale(nave, (500,500))
+    
+    screen.blit(imagem, (0, 0))
+
+    screen.blit(rotate_image(evan, -90), ((screen_width*0.1-40), (screen_height*0.3)))
+
+    screen.blit(nave, ((screen_width-352), (screen_height*0.3)))
+    screen.blit(rotate_image(nave, 45), ((screen_width-530), (screen_height*0.4 - 30)))
+    screen.blit(rotate_image(nave, 135), ((screen_width-530), (screen_height*0.75 + 30)))
+    
+    screen.blit(rotate_image(nave, 90), ((screen_width-585), (screen_height*0.6 - 10)))
+    
+    screen.blit(rotate_image(nave, -45), ((screen_width-220), (screen_height*0.4 - 30)))
+    screen.blit(rotate_image(nave, -135), ((screen_width-220), (screen_height*0.75 + 30)))
+    
+    screen.blit(rotate_image(nave, -90), ((screen_width-125), (screen_height*0.6 - 10)))
+    screen.blit(rotate_image(nave, 180), ((screen_width-352), (screen_height*0.9 - 20)))
+    
+def tut2():
+    imagem = pygame.image.load("img/Tut2.png")
+    imagem = pygame.transform.scale(imagem, (size))
+    evan = pygame.transform.scale(nave, (150,150))
+    screen.blit(imagem, (0, 0))
+    screen.blit(rotate_image(evan, -90), ((screen_width*0.1 - 40), (screen_height*0.7)))
+    screen.blit(rotate_image(evan, -90), ((screen_width*0.1 - 40), (screen_height*0.4 + 25)))
+            
+def tut():
+    img = rotate_image(nave,90)
+    image = nave
+    ale=0
+    running = True
+    while running == True:
+        if ale == 0:
+            tut1()
+        elif ale == 1:
+            tut2()
+
+        
+        for event in pygame.event.get():
+            if pygame.mouse.get_pressed()[0]:
+                if ale==1:
+                    running = False
+                else:
+                    ale=+1
+                    
+                    
+                    
+        pygame.display.flip()
+
+
+def loadChars():
+    if nivel == 1:
+        screen.blit(bossLeft, (50, screen_height*0.5))
+        screen.blit(playerRight, ((screen_width-500), (screen_height*0.2)))
+    else:
+        screen.blit(playerLeft, (50, screen_height*0.2))
+        screen.blit(bossRight, ((screen_width-500), (screen_height*0.5)))
+
+            
 def writeCuts(array,i):
     aa=i
     z=array[aa]
@@ -320,16 +387,7 @@ def writeCuts(array,i):
     screen.blit(texto2, (30, (screen_height - 130)))
     texto3 = font.render(c, True, (WHITE))
     screen.blit(texto3, (30, (screen_height - 80)))
-
-
-def loadChars():
-    if nivel == 1:
-        screen.blit(bossLeft, (50, screen_height*0.5))
-        screen.blit(playerRight, ((screen_width-500), (screen_height*0.2)))
-    else:
-        screen.blit(playerLeft, (50, screen_height*0.2))
-        screen.blit(bossRight, ((screen_width-500), (screen_height*0.5)))
-        
+    
 def cuts():
     files=[]
     files=['Cutscene/cutscene1.txt','Cutscene/cutscene2.txt','Cutscene/cutscene3.txt','Cutscene/cutscene4.txt' ]
@@ -478,6 +536,7 @@ def rankdps():
             i=0
             for valorr in file1:
                 arr[i] = valorr
+                arr[i]=arr[i][:-1]
                 i+=1
                         
             imagem = pygame.image.load('img/rankBg.jpg')
@@ -499,9 +558,6 @@ def rankdps():
             rank_3 = font.render('3 - %s' %arr[2], True, WHITE)
             screen.blit(rank_3, (rank_1.get_width() + rank_2.get_width() + rank_3.get_width() / 2, screen_height - 200  +130))
 
-            
-            
-            
     
             pygame.display.flip()
 
@@ -525,11 +581,13 @@ def rankdps():
                     i+=1
                 one -=1
 
-def menu():
-    running = True
+def playTT():
     mixer.music.load("Audio/Music/SF-Corn.mp3")
     mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.5)
+def menu():
+    running = True
+    playTT()
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -539,11 +597,11 @@ def menu():
                 if event.key == pygame.K_1:
                     game()
                 elif event.key == pygame.K_2:
-                    creditos()
+                     rank()
                 elif event.key == pygame.K_3:
                     opcoes()
                 elif event.key == pygame.K_4:
-                    rank()
+                    creditos()
                 elif event.key == pygame.K_5:
                     pygame.quit()
                     sys.exit()
@@ -556,7 +614,7 @@ def menu():
         pygame.draw.rect(screen, (WHITE), (screen_width / 2 - option1_text.get_width() / 2 - 5, 345, option1_text.get_width() +15, option1_text.get_height() + 15))
         screen.blit(option1_text, (screen_width / 2 - option1_text.get_width() / 2, 350))
 
-        option2_text = font.render('2 - Créditos', True, BLACK)
+        option2_text = font.render('2 - Ranking', True, BLACK)
 
         pygame.draw.rect(screen, (WHITE), (screen_width / 2 - option2_text.get_width() / 2 - 5, 415, option2_text.get_width() +15, option2_text.get_height() + 15))
         screen.blit(option2_text, (screen_width / 2 - option2_text.get_width() / 2, 420))
@@ -566,7 +624,7 @@ def menu():
 
         screen.blit(option3_text, (screen_width / 2 - option3_text.get_width() / 2, 490))
 
-        option4_text = font.render('4 - Ranking', True, BLACK)
+        option4_text = font.render('4 - Créditos', True, BLACK)
         pygame.draw.rect(screen, (WHITE), (screen_width / 2 - option4_text.get_width() / 2 - 5, 555, option4_text.get_width() +15, option4_text.get_height() + 15))
 
         screen.blit(option4_text, (screen_width / 2 - option4_text.get_width() / 2, 560))
@@ -669,6 +727,7 @@ def creditos():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    playTT()
                     running = False
         
         screen.fill(BLACK)
@@ -724,16 +783,17 @@ def opcoes():
                     opcoes_running = False
                 elif event.key == pygame.K_UP:
                     opcao_selecionada -= 1
-                    if opcao_selecionada < 1:
-                        opcao_selecionada = 3
+                    if opcao_selecionada < 2:
+                        opcao_selecionada = 1
                 elif event.key == pygame.K_DOWN:
                     opcao_selecionada += 1
-                    if opcao_selecionada > 3:
+                    if opcao_selecionada > 2:
                         opcao_selecionada = 1
                 elif event.key == pygame.K_RETURN:  
                     if opcao_selecionada == 1:  
                         show_volume_slider = not show_volume_slider
-                        
+                elif event.key == pygame.K_1:
+                    show_volume_slider = not show_volume_slider
 
             elif event.type == pygame.MOUSEMOTION:
                 
@@ -802,6 +862,7 @@ def game():
     expressao = expressions("_","_")
 
     cutscene = True
+    tut()
     game_running=True
     while game_running:
         
@@ -931,6 +992,8 @@ def game():
         cuts()
         cutscene = False
     rankdps()
+    playTT()
+
 menu()
 
 
