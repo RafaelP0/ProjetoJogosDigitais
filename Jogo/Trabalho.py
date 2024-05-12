@@ -843,7 +843,7 @@ def game():
     global coletado
     coletado = 0
     
-    numColetar = 2
+    numColetar = 3
     ship=naves[choose()]
     temporizador = 12
 
